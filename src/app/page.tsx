@@ -1,7 +1,9 @@
 "use client";
 import NewBooks from "@/components/shared/NewBooks";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
+  ArrowRight,
   BookOpen,
   Camera,
   CreditCard,
@@ -103,6 +105,7 @@ export default function Home() {
     const timer = setInterval(() => {
       setCurrentImages((prev) => (prev + 1) % bannerImages.length);
     }, 5000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -226,29 +229,72 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-              {buySteps.map((step, index) => (
-                <div key={index} className="flex flex-col h-full relative">
-                  <div className="bg-yellow-500 rounded-xl p-8 shadow-lg text-center flex-grow flex flex-col">
-                    <div className="absolute top-2 left-14 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium z-10">
-                      {step.step}
-                    </div>
-                    <div className="w-16 mb-4 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-                      {step.icon}
-                    </div>
-                    <h3 className="font-semibold mb-2">{step.title}</h3>
-                    <p className="text-gray-600 text-sm flex-grow">
-                      {step.description}
-                    </p>
+            {buySteps.map((step, index) => (
+              <div key={index} className="flex flex-col h-full relative">
+                <div className="bg-yellow-500 rounded-xl p-8 shadow-lg text-center flex-grow flex flex-col">
+                  <div className="absolute top-2 left-14 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-medium z-10">
+                    {step.step}
                   </div>
+                  <div className="w-16 mb-4 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
+                    {step.icon}
+                  </div>
+                  <h3 className="font-semibold mb-2">{step.title}</h3>
+                  <p className="text-gray-600 text-sm flex-grow">
+                    {step.description}
+                  </p>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Blog Post */}
-      <section></section>
+      <section className="py-16 bg-[rgb(221, 234, 254)]">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Read from our <span className="text-primary">Blog</span>
+          </h2>
 
+          <div className="grid md:grid-cols-3 gap-8">
+            {blogPosts.map((post, index) => (
+              <Card
+                key={index}
+                className="flex flex-col h-full overflow-hidden transition-all duration-300 hover:shadow-lg"
+              >
+                <CardContent className="p-0 flex flex-col h-full">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={post.imageSrc}
+                      alt={post.title}
+                      layout="fill"
+                      objectFit="cover"
+                      className="transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                      <div className="bg-primary/10 p-2 rounded-full">
+                        {post.icon}
+                      </div>
+                      <span className="flex-grow">{post.title}</span>
+                    </h3>
+                    <p className="text-gray-500 text-sm flex-grow">
+                      {post.description}
+                    </p>
+                    <Button
+                      variant="link"
+                      className="mt-4 p-0 flex items text-primary"
+                    >
+                      Read more <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
